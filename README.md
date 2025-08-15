@@ -26,10 +26,10 @@ Frontend for the Code Blog application, built with **React**.
 
 ## Screenshots
 ### Homepage
-![Homepage](./homepage.png)
+![Homepage](homepage.png)
 
 ### Posts Page
-![Posts](./posts.png)
+![Posts](posts.png)
 
 ## Tech Stack
 - React
