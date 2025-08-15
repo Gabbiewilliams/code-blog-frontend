@@ -1,0 +1,17 @@
+service: web         
+runtime: nodejs20
+
+handlers:
+  # Cache-busted static assets
+  - url: /(.*\.(css|js|png|jpg|jpeg|svg|ico|txt|json|map))
+    static_files: build/\1
+    upload: build/.*\.(css|js|png|jpg|jpeg|svg|ico|txt|json|map)
+    http_headers:
+      Cache-Control: "public, max-age=31536000, immutable"
+
+  # Everything else -> index.html (React SPA)
+  - url: /.*
+    static_files: build/index.html
+    upload: build/index.html
+    http_headers:
+      Cache-Control: "no-cache"

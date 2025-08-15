@@ -5,24 +5,38 @@ import { apiGet, apiPost } from '../api';
 const parseTags = (s) =>
   (s || '')
     .split(',')
-    .map(t => t.trim())
+    .map((t) => t.trim())
     .filter(Boolean);
+
+// Normalize any response into an array of posts
+function toPostArray(res) {
+  if (Array.isArray(res)) return res;
+  if (res && Array.isArray(res.posts)) return res.posts;
+  return [];
+}
 
 export default function Home() {
   const titleRef = useRef(null);
-  const tagsRef  = useRef(null);
+  const tagsRef = useRef(null);
 
   const [body, setBody] = useState('## Welcome!\nWrite your post here…');
   const [publishing, setPublishing] = useState(false);
-  const [mine, setMine] = useState([]);
+  const [mine, setMine] = useState([]);          // always try to keep this an array
+  const [loadingMine, setLoadingMine] = useState(true);
+  const [mineError, setMineError] = useState('');
 
   async function loadMine() {
     try {
-      const posts = await apiGet('/posts/mine');
-      setMine(posts);
+      setLoadingMine(true);
+      setMineError('');
+      const res = await apiGet('/posts/mine');
+      setMine(toPostArray(res));
     } catch (e) {
-      // not signed in 
+      // not signed in or other error: just show no posts
       setMine([]);
+      setMineError(e?.message || '');
+    } finally {
+      setLoadingMine(false);
     }
   }
 
@@ -33,7 +47,7 @@ export default function Home() {
   async function handlePublish(e) {
     e.preventDefault();
     const title = titleRef.current?.value || '';
-    const tags  = parseTags(tagsRef.current?.value || '');
+    const tags = parseTags(tagsRef.current?.value || '');
 
     if (!title.trim() || !body?.trim()) {
       alert('Please enter both a title and body.');
@@ -43,9 +57,13 @@ export default function Home() {
     try {
       setPublishing(true);
       await apiPost('/posts', { title: title.trim(), body, tags });
-      // tags
-      titleRef.current.value = '';
+
+      // reset inputs
+      if (titleRef.current) titleRef.current.value = '';
+      if (tagsRef.current) tagsRef.current.value = '';
       setBody('');
+
+      // refresh "mine"
       await loadMine();
     } catch (err) {
       alert(err?.message || 'Failed to publish');
@@ -72,7 +90,7 @@ export default function Home() {
         />
 
         <div data-color-mode="light" className="mb-3">
-          <MDEditor height={380} value={body} onChange={setBody} />
+          <MDEditor height={380} value={body} onChange={(v) => setBody(v || '')} />
         </div>
 
         <button className="btn btn-primary" disabled={publishing}>
@@ -89,13 +107,20 @@ export default function Home() {
         </a>
       </div>
 
-      {mine.length === 0 ? (
-        <p className="text-muted mt-3">No posts yet.</p>
+      {loadingMine ? (
+        <p className="text-muted mt-3">Loading your posts…</p>
+      ) : !Array.isArray(mine) || mine.length === 0 ? (
+        <p className="text-muted mt-3">
+          {mineError ? 'Not signed in.' : 'No posts yet.'}
+        </p>
       ) : (
         <ul className="mt-3">
-          {mine.map(p => (
-            <li key={p._id}>
-              <strong>{p.title}</strong> <span className="text-muted">({p.tags?.join(', ')})</span>
+          {mine.map((p) => (
+            <li key={p._id || p.id}>
+              <strong>{p.title}</strong>{' '}
+              <span className="text-muted">
+                ({Array.isArray(p.tags) ? p.tags.join(', ') : ''})
+              </span>
             </li>
           ))}
         </ul>

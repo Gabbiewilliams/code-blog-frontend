@@ -1,3 +1,42 @@
+
+---
+
+## **frontend/README.md**
+```md
+# Code Blog Frontend
+
+## Deployed link 
+https://web-dot-code-blog-12345.uw.r.appspot.com/
+## Overview
+Frontend for the Code Blog application, built with **React**.
+
+## Features Implemented
+- Google login integration with backend API.
+- Create new blog posts with Markdown editor.
+- View and manage user’s own posts.
+- Browse all posts.
+- Add tags to posts.
+- Responsive layout styled with Bootstrap.
+
+## Screenshots
+### Homepage
+![Homepage](./homepage.png)
+
+### Posts Page
+![Posts](./posts.png)
+
+## Tech Stack
+- React
+- Bootstrap
+- @uiw/react-md-editor
+- Fetch API for backend requests
+
+## How to Run Locally
+1. Install dependencies:
+   ```bash
+   npm install
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
