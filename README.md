@@ -5,6 +5,12 @@
 ```md
 # Code Blog Frontend
 
+# Added additional routing for the google sign in authorization and tokens
+
+### How to use the blog 
+First on the home page sign in, you must sign in to create a post.Then you can make post using markdown if you want to display code.
+you can hit the post tab to view all post anyone signed in has made. you can choose to favorite certain posts. You can also see the totla number of public post, as well as how many personal posts you gave made in the profile sections.
+
 ## Deployed link 
 https://web-dot-code-blog-12345.uw.r.appspot.com/
 ## Overview
