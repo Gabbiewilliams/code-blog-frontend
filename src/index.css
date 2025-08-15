@@ -1,13 +1,20 @@
+/* Light blue app background */
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background: #eaf6ff; /* soft light blue */
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Navy navbar */
+.navbar-navy {
+  background-color: #0b2a4a !important; /* deep navy */
+}
+.navbar-navy .navbar-brand,
+.navbar-navy .nav-link,
+.navbar-navy .navbar-text {
+  color: #ffffff !important;
+}
+
+/* Center “card” area on Home */
+.home-wrap {
+  max-width: 900px;
+  margin: 0 auto;
 }
